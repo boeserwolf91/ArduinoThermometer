@@ -1,0 +1,4 @@
+# nicht verwendete Latexdateien ausblenden
+Dokumentation/*
+!Dokumentation/*.tex
+!Dokumentation/*.pdf
