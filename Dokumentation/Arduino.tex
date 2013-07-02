@@ -1,0 +1,375 @@
+\documentclass[a4paper]{scrreprt}
+
+\usepackage[utf8]{inputenc} % Paket, dass angibt, dass der UTF-8 Zeichensatz verwendet wird.
+\usepackage[ngerman]{babel}	% Paket für die neue deutsche Rechtschreibung
+\usepackage{titlesec, blindtext, color}
+
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}       % Paket, dass Links in die PDF einfügt.
+
+\titleformat{\chapter}[hang]{\LARGE\bfseries}{\thechapter{.}\hspace{10pt}}{0pt}{\LARGE\bfseries} 
+% Formatierung des \chapter befehls geaendert!
+
+
+\author
+{
+	Stefan Wolf \\ 
+	Angewandte Informatik - Mobile Systeme 2011 \\ 
+	stefan.wolf@student.inf.hs-anhalt.de \\ 
+	Matrikel-Nr: 4054391
+}
+\date{letzte Bearbeitung: \today}
+\title
+{
+	Projekt "Arduino" \\ 
+	\vspace{5 mm}
+	{
+		\large Erstellung eines Thermometers \\
+	}
+}
+
+\hypersetup  % Setup für hyperred-Paket Einstellungen, können auch innerhalb \usepackage mit [] geschrieben werden
+{
+	%hidelinks = false,     		% hides links completaly
+	bookmarks=true,         	% show bookmarks bar?
+    unicode=false,          	% non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        	% show Acrobat’s toolbar?
+    pdfmenubar=true,        	% show Acrobat’s menu?
+    pdffitwindow=false,     	% window fit to page when opened
+    pdfstartview={FitH},    	% fits the width of the page to the window
+    pdftitle={Arduino},    	% title
+    pdfauthor={Stefan Wolf}, 	% author
+    pdfsubject={Erstellung eines Thermometers},   % subject of the document
+    pdfcreator={Stefan Wolf},   % creator of the document
+    pdfproducer={Stefan Wolf}, 	% producer of the document
+    pdfkeywords={Arduino} {UNO} {Display} {Thermometer}, % list of keywords
+    pdfnewwindow=true,      	% links in new window
+    colorlinks=true,       		% false: boxed links; true: colored links
+    linkcolor=black,          	% color of internal links (change box color with linkbordercolor)
+    citecolor=black,        	% color of links to bibliography
+    filecolor=magenta,      	% color of file links
+    urlcolor=cyan           	% color of external links
+}
+
+\begin{document}
+	\maketitle			% Erstellt eine Titelseite. Beinhaltet Autor, Datum, Titel
+		
+	\tableofcontents	% Erstellt ein Inhaltsverzeichnis
+	\setcounter{tocdepth}{3}	% Gibt die max. Gliederungstiefe an, die im Inhaltsverzeichnis gezeigt wird
+	\chapter{Einleitung und Motivation}	
+		\section{Entstehung der Projektidee}
+			Als ich zum ersten Mal in die Arduinoveranstaltung meiner Hochschule gekommen bin, 
+			hatte ich keine Ahnung,	worum es sich dabei "uberhaupt genau handelt.
+			Daher war es klar, dass ich mich erstmal mit den Basics vertraut machen muss.
+			Auf Grund dessen habe ich mir zuerst ein paar B"ucher besorgt 
+			und in diesen gest"obert. \\
+			Allerdings ging die ganze Problematik nach kurzer Zeit schon relativ leicht von der Hand.   
+			Deshalb musste jetzt langsam eine Idee her. F"ur mich stand fest, 
+			dass das ganze nichts mit LED-W"urfeln oder "Ahnliches zutun haben sollte. \\
+			Nach langem Hin und Her hab ich mir gedacht, dass ich mir ja ein Display 
+			besorgen k"onnte und auf diesem irgendetwas anzeige.
+			Das war eigentlich die ganze Entstehung der Idee. Da mir nichts besseres eingefallen
+			ist, wollte ich eine Temperatur auf dem Display anzeigen lassen.
+			
+		\section{Vorstellung der Idee}	
+			Bei dem Projekt geht es darum eine Temperatur auf dem Display anzeigen zu lassen.
+			Zwischenzeitlich hatte sich die Idee eins, zwei mal ver"andert. So sollte mal 
+			zus"atzlich	zur aktuellen Temperatur noch der minimale und der maximale 
+			gemessene Wert angezeigt werden. Die Idee wurde allerdings nach den ersten
+			Entw"urfen der Anzeige wieder verworfen. Auch der Plan die Temperatur 
+			ebenfalls in Kelvin und Grad Fahrenheit anzeigen lassen zu können, 
+			wurde wieder abgewendet.\\
+			\newline
+			Meine Hauptintention lag in der Ideesammelphase darin, das genaue 
+			Zusammenwirken der einzelnen Bauteile und deren Ansteuerung 
+			kennenzulernen. Auch das Arbeiten mit den Datenbl"attern
+			musste trainiert werden. \\
+			Zu diesem Zeitpunkt dachte ich noch, dass es sich bei diesem Projekt
+			um eine leicht zu l"osende Aufgabe handelt. Diese hat sich aber schnell schon
+			als schwieriger herausgestellt als vorher gedacht. Aber dazu an sp"aterer Stelle mehr.   
+			
+	\chapter{Konzept}
+		%wie soll es gemacht werden, welche Mittel etc.
+		%	-Vorstellung der Bauteile mit Bildern etc.
+		In der Konzeptionsphase habe ich mich damit befasst, alle ben"otigten Arbeitsmittel 
+		f"ur das Projekt zu besorgen.
+		Im folgenden werde ich meine Teile auflisten und deren Funktion erl"autern. 
+		Bilder zu den einzelnen	Teilen befinden sich im Anhang.
+		
+		\begin{itemize}
+			\item \textbf{Arduino-StarterKit} \\
+				Das Arduino Starterkit haben wir im Rahmen der Veranstaltung bekommen.
+				Aus diesem Starterkit ben"otigte ich folgende Teile:
+				\begin{itemize}					
+					\item \textbf{Kabel} \\
+					Viele Kabel aus diesem Kit wurden f"ur das Projekt verwendet. 
+					Diese braucht man um die einzelnen Bauteile miteinander zu verbinden.
+					
+					\item \textbf{Potentiometer} \\
+					Das Potentiometer aus diesem Kit wurde zur Regelung des Kontrastes 
+					genommen. 
+					
+					\item \textbf{Temperatursensor LM35} \\
+					Um die Temperatur der Umgebung zu messen und auf dem Display auszugeben,
+					wird dieser Temperatursensor genommen.
+					
+					\item \textbf{Steckplatine} \\
+					Da ich alle Teile aus dem Kit wieder abgeben muss, konnte ich an diese 
+					keine Kabel anl"oten. 
+					Zum Verbinden der einzelnen Teile wurde daher die Steckplatine verwendet.
+				\end{itemize}
+				
+			\item \textbf{LCD-Display EA DIP204-4} \\
+			Dabei handelt sich um meinen verwendeten Display. W"ahrend des Projektes wollte ich
+			die Funktionsweise dieses Teils lernen. Auf Grund dessen sind auch Teile programmiert, 
+			die nicht wirklich gebraucht werden. \\
+			Beim Endprodukt ist dieses Ger"at daf"ur zust"andig, die aktuelle Temperatur 
+			anzuzeigen. \\
+			Das Display besitzt 18 Anschl"u"se. Es hat 2 Seiten mit je 9-St"uck mit einem Rasterma"s
+			von 2,0mm. Da die Steckplatine des Arduinos im Rasterma"s von 2,54mm best"uckt ist, 
+			ist es nicht m"oglich, dieses Display direkt anzuschlie"sen.
+			\newpage
+			\item \textbf{2x Buchsenleisten} \\
+			Bei diesen Buchsenleisten handelt es sich um 2 10-polige, welche ein Rasterma"s von 2mm
+			besitzen. Diese wurden an das Display gesteckt und daran Kabel angel"otet.
+			Dieses Teil w"are nicht von N"oten gewesen. Allerdings wollte ich, da ich noch nie
+			vorher etwas gel"otet hatte, das Display nicht kaputt machen.
+			
+			\item \textbf{Festspannungsregler} \\
+			Dieses Teil regelt eine Spannung auf 3.5V.
+			Der Festspannungsregler wurde daf"ur verwendet, die 5V des Arduinos f"ur die 
+			Hintergrundbeleuchtung des Displays auf 3.5V zu regeln. 			 
+		\end{itemize}
+		
+	\chapter{Umsetzung}
+		Die Umsetzungsphase werde ich im Folgenden in die einzelnen Problem- bzw.
+		Herausforderungsphasen unterteilen. Der Schwierigkeitsgrad der einzelnen Punkte 
+		ist dabei allerdings nicht gleichm"a"sig verteilt. Das bedeutet, dass einige
+		Unterpunkte leichter zu erledigen waren als Andere. \\
+		Im Anhang befinden sich wieder Bilder aus den einzelnen Phasen. 
+		Diese sind zus"atzlich entsprechend nummeriert.
+		
+		\section{L"oten}
+			Der erste Schritt den es zu erledigen galt, war das Anl"oten von Kabeln an
+			die Buchsenleisten. Da ich mich mit dieser Aufgabe noch nie besch"aftigt hatte,
+			habe ich einen Kumpel um Hilfe gebeten.
+			Dieser hat mir bei der Realisierung dieses Aufgabenteils geholfen. \\
+			In der L"otphase wurde jeweils ein Kabelende eines Kabels mit einem Pin 
+			der Buchsenleiste verbunden. Das Andere wurde verzinnt,	damit dieses sich 
+			leichter mit der Steckplatine verbinden l"asst.
+			Damit war das Problem abgeschlossen und ich konnte mich um den 
+			n"achsten Punkt k"ummern.
+		
+		\section{Display Anschlie"sen}
+			Beim Anschlie"sen der Pins war es erstmal notwendig, sich "uber die 
+			einzelnen Funktionen schlau zu machen. Daf"ur musste ein Blick in 
+			das Datenblatt des Displays geworfen werden. Im Folgenden werde ich die
+			einzelnen Pins auflisten und erl"autern.
+			
+			\begin{itemize}
+				\item \textbf{Pin 1} \\
+				Dabei handelt es sich um den Ground bzw. Masse-Pin.
+				
+				\item \textbf{Pin 2} \\
+				Dies ist der Pluspol des Displays. Dieser ben"otigt eine 5V 
+				Stromversorgung.
+				\newpage
+				\item \textbf{Pin 3} \\
+				Bei diesem Pin handelt es sich um die Kontrastspannung des Displays.
+				Diese habe ich an einen Potentiometer angeschlossen, um damit den
+				Kontrast auf einfache Art und Weise regeln zu k"onnen. 
+				Allerdings habe ich bemerkt, dass das Regeln "uber ein Potentiometer
+				wenig Sinn macht, da der Toleranzspannungbereich ziemlich klein ist und sich
+				daher wenig einstellen l"asst.
+				
+				\item \textbf{Pin 4} \\
+				Mithilfe dieses Pins l"asst sich dem Display sagen, ob Befehle oder Daten
+				zum Display geschickt werden.
+				Wenn Befehle auf den Display geschickt werden, ist dieser Pin LOW,
+				bei Daten HIGH.
+				
+				\item \textbf{Pin 5} \\
+				Der R/W-Pin teilt dem Display mit, ob im n"achsten Schritt auf das Display
+				geschrieben oder vom Display gelesen wird. Daf"ur muss der Pin mit LOW belegt
+				sein, wenn geschrieben werden soll und mit HIGH beim Lesen.
+				
+				\item \textbf{Pin 6} \\
+				Bei diesem Pin handelt es sich um den Enable-Pin. Die Wirkungsweise 
+				dieses Pins herauszufinden, hat mir die meiste Zeit des Projektes 
+				gekostet. Das lag einfach daran, dass der Enable-Pin nur ganz kurz
+				im Datenblatt erw"ahnt wurde und sozusagen vom Leser erwartet wurde,
+				dass er das daf"ur notwendige Know-how besitzt. \\
+				Dieser Pin muss nachdem alle Pins richtig gesetzt wurden einen Flankenwechsel
+				von High auf Low haben. Nachdem dies passiert ist, f"uhrt das Display
+				den gesendeten Befehl aus. \\
+				Allerdings muss jetzt noch darauf geachtet werden, dass man, bevor das n"achste
+				zum Display geschickt wird, wartet, bis der Befehl fertig ausgef"uhrt wurde.\\
+				Daf"ur gibt es zwei M"oglichkeiten.
+				Zum einen kann man die im Datenblatt stehenden Zeiten abwarten. Dies hat den 
+				Vorteil, dass man den Prozess die n"otige Zeit schlafen legen k"onnte und die
+				CPU diesen vorerst nicht ausf"uhren muss. Aber es gibt den Nachteil, dass man 
+				unter Umst"anden zu lange wartet, da im Datenblatt die Maximaldauer 
+				der einzelnen Befehle steht.
+				Zum anderen k"onnte man ein Busy-Flag durch Polling abfragen. Der Vorteil hierbei
+				besteht darin, dass man immer nur so lange wartet, wie n"otig ist und keine
+				unn"utze Zeit verstreichen l"asst. Allerdings l"auft hierbei der Prozess immer 
+				auf 100\% und die CPU kann sich ggf. in der Zeit nicht voll und ganz um andere 
+				wichtige Prozesse k"ummern. \\
+				Bei meinem Projekt hab ich mich für die erste Variante entschieden, 
+				da ich keine zeitkritische Anwendung damit bedienen m"ochte.
+				  
+				\item \textbf{Pin 7 - Pin 14} \\
+				Dabei handelt es sich um die 8 Datenpins von DB0 - DB7. Mit deren Hilfe, werden
+				die Daten und Befehle spezifiziert.
+				
+				\item \textbf{Pin 15} \\
+				Dieser Pin hat keine Funktion.
+				
+				\item \textbf{Pin 16} \\
+				Dieser Pin ist der Reset-Pin. Mithilfe eines Flankenwechsels von High auf Low
+				kann man damit das Display komplett zur"ucksetzen.
+				
+				\item \textbf{Pin 17} \\
+				Hierbei handelt es sich um den Pluspol der LED-Hintergrundbeleuchtung. Dieser
+				ist mit einem Festspannungsregler verbunden der die Spannung auf 3,5V 
+				herunter regelt.
+				
+				\item \textbf{Pin 18} \\
+				Dieser Pin ist der Minuspol der LED-Hintergrundbeleuchtung.
+				 
+			\end{itemize}
+			Mithilfe dieser Informationen konnte man dann die Pins mit dem Arduino verbinden.
+			Einen ausf"uhrlichen Schaltplan habe ich im Anhang hinterlegt. 
+			Als das Display fertig angeschlossen war, habe ich mit der Ansteuerung begonnen.
+			
+		\section{Display Programmieren}	
+			Nachdem das Anschlie"sen des Displays abgeschlossen war, habe ich damit angefangen
+			mir zu "uberlegen, wie ich das Display jetzt testen kann. 
+			Da ich keine Ahnung hatte, wie das Ganze genau funktioniert, habe ich damit begonnen
+			eine kleine Displayklasse zu schreiben. Diese sollte anfangs nur ganz spartanische
+			Methoden besitzen. So ist folgende kleine Headerdatei entstanden:
+			
+			\begin{lstlisting}[language=c++]
+#define RW 12
+#define RS 13
+
+#define DB0 10
+#define DB1 9
+...
+#define DB7 3
+
+class Display
+{
+	private:
+		/*
+		 * Dieses Attribut beinhaltet die 8 Datenbits.
+		 */
+		int DB_ARRAY[8];
+		/*
+		 * Diese Methode bestimmt ob das Byte aus dem  
+		 * value-Parameter 1 oder 0 ist und gibt dies 
+		 * entsprechend zurueck.
+		 */
+		int getBit(int value, int bitNumber);
+		
+	public:
+		/*
+		 * Konstruktor hat DB_ARRAY initialisiert
+		 */
+		Display();
+		/*
+		 * Sollte Datenbyte an Display senden
+		 */
+		void writeData(int value);
+		/*
+		 * Sollte Befehl an Display senden
+		 */
+		void executeCommand(int value);
+}
+			\end{lstlisting} 
+			Wie man sieht hatte der Enable-Pin zu diesem Zeitpunkt noch	gar keinen 
+			Platz im Programm gefunden, da ich damit nicht umzugehen wusste.
+			(Sieht man daran, dass die passende Pr"aprozessorvariable fehlt!) \\
+			Nachdem diese Version nicht funktioniert hatte, hat es der Pin
+			aber trotzdem ins Programm geschafft und nach ewigem Ausprobieren und 
+			Ab"andern das Quelltextes, hat es dann auch irgendwann funktioniert. \\
+			\newline
+			Nachdem ich es hinbekommen hatte erfolgreich mit dem Display zu kommunizieren,
+			musste ich es schaffen, float-Werte an den Display zu senden. Daher 
+			mussten daf"ur auch noch Methoden geschrieben werden.
+			Dieser Schritt war allerdings im Vergleich zum Vorherigen relativ leicht 
+			und schnell erledigt. \\
+			Als Letztes musste ich mir jetzt noch "uberlegen, wie ich die Werte
+			auf dem Display darstelle. Ich habe mich daraufhin ziemlich schnell daf"ur 
+			entschieden, die Temperatur "uber alle 4 Zeilen anzeigen zu lassen und mich
+			mit Photoshop um ein paar Entw"urfe gek"ummert. Die Schwierigkeit dabei bestand
+			darin, dass ich f"ur diese Aufgabe nur 8 eigene Zeichen definieren durfte.
+			Nachdem ich 2 verschiedene Entw"urfe erstellt hatte, habe ich einen Kumpel nach
+			seiner Meinung "uber diese gefragt. Nach kurzer Zeit hatte er mir ein Bild mit
+			einer Schriftart gesendet, die er im Internet gefunden hatte. Diese ist dann 
+			schlie"slich auch die finale Schriftart geworden. \\
+			Als auch dieser Schritt erfolgreich abgearbeitet war, kam ich zum vorerst letzten
+			Abschnitt meines Projektes. Ich musste jetzt schlie"slich noch den 
+			Temperatursensor anbauen und programmieren.  
+
+		\section{Temperatursensor Anschlie"sen und Programmieren}
+			Da ich meine Grundkentnisse, w"ahrend ich die anderen Abschnitte abgearbeitet hatte,
+			ausbaute, war dieser Schritt mit Abstand am einfachsten zu realisieren.
+			Den Sensor musste man einfach nur "uber 3 Pins anschlie"sen. Zwei Anschl"usse 
+			davon sind der Plus- und der Minuspol.
+			Der dritte Pin ist die Ausgangsspannung aus dem Ger"at, die abh"angig von der 
+			Temperatur ist. Dieser wird einfach nur an einen der analogen Eingang des 
+			Arduinos angeschlossen. \\
+			Um die aktuelle Temperatur auszulesen, muss man jetzt einfach nur den Pin auslesen
+			und ein bisschen rechnen. Im folgenden zeige ich das Ganze im Quellcode:
+			\begin{lstlisting}[language=c++]
+...
+/* 
+ * adc - Analog/Digital-Converter 
+ * gibt Wert von 0 bis 1023 (2^10) zurueck!
+ */
+int adcValue = analogRead(temperatureSensorPin);
+/* milliVolt - Voltzahl in mV, die am Sensor anliegt */
+float millivolts = (adcValue / 1024.0) * milliVolt;
+
+/* Sensor-Output ist 10mV pro Grad Celsius */
+float celsius = millivolts / 10; 
+...
+			\end{lstlisting}
+			Allerdings musste ich feststellen, dass die Temperatur manchmal ziemlich 
+			gro"se Ausrei"ser hat.
+			Auf Grund dessen habe ich die Temperatur mittels Mittelwertbestimmung erhalten.
+			Ich habe immer die letzten 14 gemessenen Werte gespeichert und den Mittelwert aus
+			diesen Zahlen und der neu gemessenen Zahl bestimmt, um diesem Effekt entgegen 
+			zu wirken. 
+		
+		\section{Coderefactoring}		
+		Im letzten Schritt musste der Code noch h"ubsch gemacht werden. Da man jetzt die
+		komplette Funktionsweise kennt, konnte man sich nun dar"uber Gedanken machen, wie man
+		den Quellcode am besten aufbaut. \\
+		Ich habe mich daf"ur entschieden, das ganze mit 3 Klassen und 2 Strukturen zu realisieren.
+		Den kompletten Quellcode findet man ebenfalls komplett kommentiert im Anhang.		
+		
+		
+	\chapter{Ergebnisse bzw. Fazit}
+		W"ahrend des Projektes hab ich eine Menge positive wie negative Erfahrungen dazu 
+		gewonnen und ich denke, dass sich das Ergebnis nicht zu verstecken braucht.
+		Ich habe gelernt, wie ich mit elektronischen Bauteilen umzugehen habe, wie man 
+		mit diesen kommunizieren kann und wie man ein solches Projekt aufbaut.
+		Leider musste ich feststellen, dass die Informationen die in den einzelnen
+		Datenbl"attern stehen nicht immer die Wahrheit erz"ahlen oder gar n"utzlich sind. 
+		Beispielsweise war die Definition von eigenen Zeichen f"ur das Display 
+		vollkommen falsch beschrieben. \\
+		Au"serdem konnte ich feststellen, dass mir das Programmieren mehr Spa"s bereitet, als 
+		das L"oten und Zusammenstecken. Nichtsdestotrotz hat es einen riesen Spa"s gemacht
+		und ich w"urde kommenden Arduino-Projekten nicht von vornherein einen Stein in den
+		Weg legen. \\
+		Das bedeutet, dass ich auch in Zukunft daf"ur offen w"are, eine Problemstellung 
+		dieses Typs zu realisieren.
+		Interessant f"ande ich es, eine kleine Art Betriebssystem mit einfachem Dispatcher und
+		einfachem Scheduler f"ur das Arduino zu bauen.
+		Sodass man unter Umst"anden mehr als ein Projekt mit dem Arduino verwalten k"onnte.
+		Vielleicht gibt es ja irgendwann die daf"ur notwendige Zeit.
+		
+\end{document}
