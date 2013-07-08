@@ -10,7 +10,7 @@ void setup()
    
     display_pins displayPins = init_display_pins(13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2); 
     
-    thermometer = new Thermometer(displayPins, 0, 4500);    
+    thermometer = new Thermometer(displayPins, 0, 4700);    
     thermometer->init();
 }
 
